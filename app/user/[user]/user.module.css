@@ -1,0 +1,43 @@
+.main {
+  overflow: hidden;
+  min-height: calc(100vh - 300px);
+}
+
+.userInfo {
+  padding: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+}
+
+.userInfo li {
+  padding: 8px 17px 25px 8px;
+  background-color: black;
+  color: white;
+}
+
+@media screen and (max-width: 1200px) {
+  .userInfo {
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .userInfo {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .userInfo {
+    padding: 25px 10px;
+    font-size: 14px;
+  }
+
+  .userInfo li {
+    padding-right: 0;
+  }
+}

@@ -28,4 +28,8 @@ export const useStore = create((set) => ({
       set({ isAuth: false, user: null, token: null });
     }
   },
+  updateUser: (gamesId) =>
+    set((state) => ({
+      user: { ...state.user, games: gamesId },
+    })),
 }));

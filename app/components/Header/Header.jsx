@@ -8,15 +8,24 @@ import { Popup } from '../Popup/Popup';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useStore } from '@/app/store/app-store';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
 
   const store = useStore()
 
+
+  const router = useRouter()
+
   const currentRout = usePathname();
 
   const [popUpIsOpened, setPopUpIsOpend] = useState(false);
 
+
+  function handleLogut() {
+    router.push('/')
+    store.logout()
+  }
 
 
   function openPopUp() {
@@ -86,10 +95,16 @@ export default function Header() {
             </Link>
           </li >
         </ul >
-        <div className={Styles['auth']}>
-          <button className={Styles['auth__button']} onClick={store.isAuth ? store.logout : openPopUp}>{store.isAuth ? "Выйти" : "Войти"}</button>
+        <div className={Styles['auth']} style={store.isAuth ? { flexDirection: "column" } : { flexDirection: "row" }}>
+          {store.isAuth ? (
+            <>
+              <button className={Styles['auth__button']} onClick={() => { handleLogut() }}> Выйти</button>
+              <button className={Styles['auth__button']} onClick={() => { router.push(`/user/${store.user.id}`) }}> Аккаунт</button>
+            </>
+          ) : (<button className={Styles['auth__button']} onClick={() => { openPopUp() }}> Войти</button>)}
         </div>
       </nav >
+
       <Overlay popUpIsOpened={popUpIsOpened} closePopUp={closePopUp} />
       <Popup popUpIsOpened={popUpIsOpened} closePopUp={closePopUp}>
         <AuthForm closePopUp={closePopUp} />

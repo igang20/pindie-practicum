@@ -1,3 +1,5 @@
+import { endpoints } from "./config";
+
 export const isResponseOk = (response) => {
   return !(response instanceof Error);
 };
@@ -26,11 +28,23 @@ export async function getGamesDataByCategory(url, category) {
   return isResponseOk(response) ? normalizeData(response) : false;
 }
 
+export async function getGameDataByVotedUserId(id, url) {
+  const response = await getData(`${url}?users_permissions_users.id=${id}`);
+  return isResponseOk(response) ? normalizeData(response) : false;
+}
+
 export const normalizeDataObject = (obj) => {
   return {
     ...obj,
     category: obj.categories,
     users: obj.users_permissions_users,
+  };
+};
+
+export const normalizeUserGames = (user) => {
+  return {
+    ...user,
+    games: [],
   };
 };
 
@@ -68,7 +82,7 @@ export async function getMe(url, jwt) {
       throw new Error("Ошибка получения данных");
     }
     const result = await response.json();
-    return result;
+    return normalizeUserGames(result);
   } catch (error) {
     return error;
   }
@@ -107,6 +121,24 @@ export async function vote(url, jwt, usersArray) {
     }
     const result = await response.json();
     return result;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function saveVoteTouser(data, jwt) {
+  try {
+    const response = await fetch(endpoints.me, {
+      method: "POST",
+      headers: {
+        // "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.status !== 200) {
+      throw new Error(`Ошибка синхронизации данных: ${response.status}`);
+    }
   } catch (error) {
     return error;
   }

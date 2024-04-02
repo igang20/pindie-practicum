@@ -12,12 +12,14 @@ export function App(props) {
     useEffect(() => {
         store.checkMe()
     }, [])
+
+
     return (
+
         <>
             <Header />
             {props.children}
             <Footer />
         </>
-
     )
 }

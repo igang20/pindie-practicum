@@ -4,6 +4,8 @@ import "./globals.css";
 import { App } from "./App";
 
 
+
+
 export const viewport = {
   width: 'device-width',
   initialScale: 1,

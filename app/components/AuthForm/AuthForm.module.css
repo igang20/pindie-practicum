@@ -31,7 +31,8 @@
 }
 
 .form__field-input {
-  width: 100%;
+  box-sizing: border-box;
+  width: auto;
   border: 1px solid #000000;
   border-radius: 4px;
   padding: 16px 24px;
@@ -44,6 +45,7 @@
   justify-content: center;
   width: 100%;
   gap: 8px;
+  margin: 20px 0;
 }
 
 .form__reset {
@@ -91,4 +93,23 @@
 .form__submit:disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+@media screen and (max-width: 450px) {
+  .form__fields {
+    width: 300px;
+  }
+
+  .form__field-input {
+    padding: 8px 12px;
+  }
+
+  .form__actions {
+    flex-direction: column;
+  }
+
+  .form__actions > button {
+    font-size: 18px;
+    padding: 10px 16px;
+  }
 }

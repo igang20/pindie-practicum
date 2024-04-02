@@ -5,4 +5,5 @@ export const titles = {
   runner: "Ранеры",
   pixel: "Пиксельные",
   TDS: "TDS",
+  faw: "Избранное",
 };

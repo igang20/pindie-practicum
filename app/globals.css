@@ -83,7 +83,7 @@ button {
   white-space: nowrap;
 }
 
-.button:hover {
+.button:hover .button:active {
   background-color: black;
   color: #ffff00;
 }

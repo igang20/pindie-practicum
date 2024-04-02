@@ -72,7 +72,9 @@
   font-size: 30px;
   font-family: "Rubic One", sans-serif;
   background-color: transparent;
+  flex-grow: 1;
   border: none;
+  height: auto;
   padding: 12px 20px 10px;
   border-left: 4px solid black;
   text-transform: uppercase;

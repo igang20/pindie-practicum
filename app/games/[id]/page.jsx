@@ -5,7 +5,7 @@ import { Overlay } from "@/app/components/Overlay/Overlay";
 import { Popup } from "@/app/components/Popup/Popup";
 import { AuthForm } from "@/app/components/AuthForm/AuthForm";
 import { useEffect, useState } from 'react'
-import { getGameDataByID, isResponseOk, getMe, getJWT, removeJWT, checkIfUserVoted, vote } from "@/app/api/apiutils";
+import { getGameDataByID, isResponseOk, checkIfUserVoted, vote, saveVoteTouser } from "@/app/api/apiutils";
 import { endpoints } from "@/app/api/config";
 import { Preloader } from "@/app/components/Preloader/Preloader";
 import { useStore } from "@/app/store/app-store";
@@ -15,11 +15,7 @@ import { useStore } from "@/app/store/app-store";
 
 export default function GamePage(props) {
 
-
     const store = useStore()
-
-
-
 
 
 
@@ -32,14 +28,28 @@ export default function GamePage(props) {
     //Запрос игры с сервера, сохранение игры и списка проголосавших в стейт
     useEffect(() => {
         async function getGame() {
-            const responce = await getGameDataByID(endpoints.games, props.params.id)
-            isResponseOk(responce) ? setGame(responce) : setGame(null)
-            setPreloaderVisible(false);
-            setVotedUsers(responce.users)
+            const responce = await getGameDataByID(endpoints.games, props.params.id).then(
+                (responce) => {
+                    if (isResponseOk(responce)) {
+                        setGame(responce);
+                        setVotedUsers(responce.users)
+                    } else {
+                        setGame(null)
+                        setVotedUsers(null)
+                    }
+                    setPreloaderVisible(false)
+                }
+            )
+
         }
         getGame()
     }, [])
 
+    function saveToUser(gameID) {
+        const currenIds = store.user.games
+        currenIds.push(gameID)
+        store.updateUser({ ...store.user, games: currenIds })
+    }
 
 
     //состояние кнопки голосоваия
@@ -60,22 +70,16 @@ export default function GamePage(props) {
     }
 
 
-    const sendVote = async function sendVote() {
+    async function sendVote() {
         votedUsers.push(store.user)
         const responce = await vote(`${endpoints.games}/${game.id}`, store.token, votedUsers).then((responce) => {
-            if (isResponseOk(responce))
-                setIsVoted(true)
-            setGame(() => { return { ...game, users: votedUsers } })
+            if (isResponseOk(responce)) {
+                setGame(() => { return { ...game, users: votedUsers } })
+            } else return;
         })
-        return responce
+
+        setIsVoted(true)
     }
-
-
-
-
-
-
-
 
     return (
         game ? (
