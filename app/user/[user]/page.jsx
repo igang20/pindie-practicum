@@ -14,13 +14,14 @@ export default function UserPage(props) {
     const [votedGames, SetVotedGames] = useState([])
 
 
+
     useEffect(() => {
         async function getVotedGames(url) {
             const result = [];
             const games = await getData(url)
             games.map((game) => {
-                game.users_permissions_users.find((user) => {
-                    user.id == props.params.user ? result.push(game) : false
+                game.users.find((user) => {
+                    user._id == props.params.user ? result.push(game) : false
                 })
             })
             SetVotedGames(normalizeData(result))

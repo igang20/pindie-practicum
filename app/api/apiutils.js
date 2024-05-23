@@ -34,11 +34,12 @@ export async function getGameDataByVotedUserId(id, url) {
 }
 
 export const normalizeDataObject = (obj) => {
-  return {
-    ...obj,
-    category: obj.categories,
-    users: obj.users_permissions_users,
-  };
+  let str = JSON.stringify(obj);
+
+  str = str.replaceAll("_id", "id");
+  const newObj = JSON.parse(str);
+  const result = { ...newObj, category: newObj.categories };
+  return result;
 };
 
 export const normalizeUserGames = (user) => {
@@ -101,6 +102,7 @@ export const removeJWT = () => {
 };
 
 export const checkIfUserVoted = (game, userId) => {
+  console.log(game, userId);
   const result = game.users.find((user) => user.id === userId);
   return result;
 };
@@ -113,7 +115,7 @@ export async function vote(url, jwt, usersArray) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
       },
-      body: JSON.stringify({ users_permissions_users: usersArray }),
+      body: JSON.stringify({ users: usersArray }),
     });
 
     if (response.status !== 200) {

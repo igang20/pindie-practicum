@@ -2,7 +2,7 @@
 'use client'
 import Styles from './AuthForm.module.css';
 import { useState, useEffect } from 'react';
-import { authorize, isResponseOk, normalizeUserGames } from '@/app/api/apiutils';
+import { authorize, isResponseOk, normalizeUserGames, normalizeDataObject } from '@/app/api/apiutils';
 import { endpoints } from '@/app/api/config';
 import { useStore } from '@/app/store/app-store';
 import RegForm from './RegForm';
@@ -10,7 +10,7 @@ import RegForm from './RegForm';
 
 export const AuthForm = (props) => {
 
-  const [authData, setAuthData] = useState({ identifier: "", password: "" })
+  const [authData, setAuthData] = useState({ email: "", password: "" })
   const [message, setMessage] = useState({ status: null, text: null })
   const [isDisaled, setIsdisabled] = useState(false)
   const [isRegistration, setIsRegistration] = useState(false)
@@ -39,10 +39,9 @@ export const AuthForm = (props) => {
   async function handleSubmit(e) {
     setIsdisabled(true)
     e.preventDefault();
-    const userAuth = await authorize(endpoints.auth, authData)
-
-    if (isResponseOk(userAuth)) {
-      store.login(normalizeUserGames(userAuth.user), userAuth.jwt)
+    const userData = await authorize(endpoints.auth, authData)
+    if (isResponseOk(userData)) {
+      store.login({ ...userData.user, id: userData._id }, userData.jwt)
       setMessage({ status: "success", text: "Вы авторизовались!" })
     } else {
       setMessage({ status: "error", text: "Неверные почта или пароль" })
@@ -69,7 +68,7 @@ export const AuthForm = (props) => {
           <div className={Styles['form__fields']}>
             <label className={Styles['form__field']}>
               <span className={Styles['form__field-title']}>Email</span>
-              <input className={Styles['form__field-input']} onInput={handleInput} name="identifier" type="email" placeholder="hello@world.com" />
+              <input className={Styles['form__field-input']} onInput={handleInput} name="email" type="email" placeholder="hello@world.com" />
 
             </label>
             <label className={Styles['form__field']}>

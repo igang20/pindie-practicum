@@ -25,11 +25,13 @@ export default function GamePage(props) {
     const [votedUsers, setVotedUsers] = useState([])
     const [isVoted, setIsVoted] = useState(false)
 
+
     //Запрос игры с сервера, сохранение игры и списка проголосавших в стейт
     useEffect(() => {
         async function getGame() {
             const responce = await getGameDataByID(endpoints.games, props.params.id).then(
                 (responce) => {
+                    console.log(responce)
                     if (isResponseOk(responce)) {
                         setGame(responce);
                         setVotedUsers(responce.users)
