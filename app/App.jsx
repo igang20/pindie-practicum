@@ -11,6 +11,7 @@ export function App(props) {
 
     useEffect(() => {
         store.checkMe()
+        console.log(store.user)
     }, [])
 
 

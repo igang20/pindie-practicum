@@ -42,7 +42,7 @@ export const AuthForm = (props) => {
     const userData = await authorize(endpoints.auth, authData)
     if (isResponseOk(userData)) {
       console.log(userData)
-      store.login({ ...userData, id: userData._id }, userData.jwt)
+      store.login(userData, userData.jwt)
 
       setMessage({ status: "success", text: "Вы авторизовались!" })
     } else {

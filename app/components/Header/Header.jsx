@@ -99,7 +99,7 @@ export default function Header() {
           {store.isAuth ? (
             <>
               <button className={Styles['auth__button']} onClick={() => { handleLogut() }}> Выйти</button>
-              <button className={Styles['auth__button']} onClick={() => { router.push(`/user/${store.user.id}`) }}> Аккаунт</button>
+              <button className={Styles['auth__button']} onClick={() => { router.push(`/user/${store.user._id}`) }}> Аккаунт</button>
             </>
           ) : (<button className={Styles['auth__button']} onClick={() => { openPopUp() }}> Войти</button>)}
         </div>
