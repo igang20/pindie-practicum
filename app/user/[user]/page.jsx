@@ -11,6 +11,7 @@ import { getData, isResponseOk, normalizeData } from '@/app/api/apiutils'
 export default function UserPage(props) {
     const [isSwiper, setListType] = useState(false)
     const store = useStore()
+    console.log(store)
     const [votedGames, SetVotedGames] = useState([])
 
 
