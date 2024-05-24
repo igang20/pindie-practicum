@@ -22,6 +22,8 @@ export default function RegForm(props) {
         setRegestrationData(newRegistrationData)
     }
 
+
+
     useEffect(() => {
         let timer;
         if (props.store.user) {
@@ -40,6 +42,7 @@ export default function RegForm(props) {
 
 
         const userReg = await authorize(endpoints.register, registrationData);
+
 
         if (isResponseOk(userReg)) {
             props.store.login(userReg.user, userReg.jwt)
